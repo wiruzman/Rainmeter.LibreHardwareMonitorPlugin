@@ -24,7 +24,6 @@ namespace PluginLibreHardwareMonitor
             };
 
             _computer.Open();
-            _computer.Accept(new UpdateVisitor());
         }
 
         private class UpdateVisitor : IVisitor
@@ -50,6 +49,7 @@ namespace PluginLibreHardwareMonitor
         
         internal double Update()
         {
+            _computer.Accept(new UpdateVisitor());
             var sensors = _computer.Hardware.SelectMany(h => h.Sensors.Concat(h.SubHardware.SelectMany(s => s.Sensors)));
             var sensor = sensors.SingleOrDefault(s => s.Identifier.ToString() == _identifier);
             if (sensor?.Value is null)
