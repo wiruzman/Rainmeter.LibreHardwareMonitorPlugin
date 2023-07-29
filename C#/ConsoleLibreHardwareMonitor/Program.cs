@@ -23,7 +23,7 @@ namespace ConsoleLibreHardwareMonitor
             var sensors = computer.Hardware.SelectMany(h => h.Sensors.Concat(h.SubHardware.SelectMany(s => s.Sensors)));
             foreach (var sensor in sensors)
             {
-                Console.WriteLine("\t\tSensor: {0}, value: {1}, identifier: {2}", sensor.Name, sensor.Value, sensor.Identifier);
+                Console.WriteLine("Sensor: {0}, value: {1}, identifier: {2}", sensor.Name, sensor.Value, sensor.Identifier);
             }
     
             computer.Close();

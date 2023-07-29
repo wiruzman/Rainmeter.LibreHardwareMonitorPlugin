@@ -80,7 +80,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="PluginLibreHardwareMonitor.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="Measure.cs" />
     <Compile Include="$(SolutionDir)..\API\RainmeterAPI.cs" />
   </ItemGroup>
   <ItemGroup>
