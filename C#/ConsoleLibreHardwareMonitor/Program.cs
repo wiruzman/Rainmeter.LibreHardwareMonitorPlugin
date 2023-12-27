@@ -14,13 +14,14 @@ namespace ConsoleLibreHardwareMonitor
                 IsGpuEnabled = true,
                 IsMemoryEnabled = true,
                 IsMotherboardEnabled = true,
-                IsControllerEnabled = true
+                IsControllerEnabled = true,
+                IsStorageEnabled = true
             };
 
             computer.Open();
             computer.Accept(new UpdateVisitor());
 
-            var sensors = computer.Hardware.SelectMany(h => h.Sensors.Concat(h.SubHardware.SelectMany(s => s.Sensors)));
+            var sensors = computer.Hardware.SelectMany(h => h.Sensors.Concat(h.SubHardware.SelectMany(s => s.Sensors).ToArray()).ToArray()).ToArray();
             foreach (var sensor in sensors)
             {
                 Console.WriteLine("Sensor: {0}, value: {1}, identifier: {2}", sensor.Name, sensor.Value, sensor.Identifier);
