@@ -15,6 +15,7 @@ namespace PluginLibreHardwareMonitor
             IsMemoryEnabled = true,
             IsMotherboardEnabled = true,
             IsControllerEnabled = true,
+            IsNetworkEnabled = true,
             IsStorageEnabled = true
         };
 
@@ -26,9 +27,7 @@ namespace PluginLibreHardwareMonitor
 
         public static void Initialize(API api, string identifier)
         {
-            api.LogF(API.LogType.Notice, "Register sensor: {0}", identifier);
-            var sensor = new Sensor(api, identifier);
-            SensorsMap[identifier] = sensor;
+            RegisterSensor(api, identifier);
             if (_initializationStarted) return;
             _initializationStarted = true;
             if (_initialized && _initializationTask != null) return;
@@ -42,6 +41,13 @@ namespace PluginLibreHardwareMonitor
             });
         }
 
+        private static void RegisterSensor(API api, string identifier)
+        {
+            api.LogF(API.LogType.Notice, "Register sensor: {0}", identifier);
+            var sensor = new Sensor(api, identifier);
+            SensorsMap[identifier] = sensor;
+        }
+
         public static ISensor GetSensor(string identifier)
         {
             return _sensors.FirstOrDefault(s => s.Identifier.ToString() == identifier);
@@ -52,13 +58,12 @@ namespace PluginLibreHardwareMonitor
             return SensorsMap.TryGetValue(identifier, out var sensor) ? sensor.Value : 0.0;
         }
 
-        public static void Close()
+        public static void Close(string identifier)
         {
             _initializationTask?.Wait();
-            foreach (var sensor in SensorsMap)
-            {
-                sensor.Value.Close();
-            }
+            SensorsMap[identifier]?.Close();
+            SensorsMap.Remove(identifier);
+            if (SensorsMap.Count != 0) return;
             if (Computer == null) return;
             Computer.Close();
             _initialized = false;

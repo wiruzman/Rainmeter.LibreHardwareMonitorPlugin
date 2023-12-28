@@ -49,9 +49,8 @@ namespace PluginLibreHardwareMonitor
 
         public void Close()
         {
-            _api.Log(API.LogType.Debug, "Closing sensor");
             _isRunningUpdate = false;
-            _api.Log(API.LogType.Debug, "Sensor closed");
+            _api.LogF(API.LogType.Notice, "Sensor closed: {0}", _identifier);
         }
     }
 }

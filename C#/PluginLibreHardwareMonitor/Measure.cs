@@ -5,11 +5,9 @@ namespace PluginLibreHardwareMonitor
 {
     internal class Measure
     {
-        private readonly string _identifier;
-
         public Measure(string identifier)
         {
-            _identifier = identifier;
+            Identifier = identifier;
         }
 
         public static implicit operator Measure(IntPtr data)
@@ -19,9 +17,10 @@ namespace PluginLibreHardwareMonitor
         
         internal double Update()
         {
-            return SensorLibraryManager.GetSensorValue(_identifier);
-
+            return SensorLibraryManager.GetSensorValue(Identifier);
         }
+
+        public string Identifier { get; }
     }
 }
 

@@ -36,7 +36,7 @@ namespace PluginLibreHardwareMonitor
         {
             Measure measure = (Measure)GCHandle.FromIntPtr(data).Target;
             GCHandle.FromIntPtr(data).Free();
-            SensorLibraryManager.Close();
+            SensorLibraryManager.Close(measure.Identifier);
         }
     }
 }
