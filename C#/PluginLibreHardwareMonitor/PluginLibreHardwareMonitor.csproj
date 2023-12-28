@@ -83,6 +83,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Measure.cs" />
     <Compile Include="$(SolutionDir)..\API\RainmeterAPI.cs" />
+    <Compile Include="Sensor.cs" />
     <Compile Include="SensorLibraryManager.cs" />
   </ItemGroup>
   <ItemGroup>

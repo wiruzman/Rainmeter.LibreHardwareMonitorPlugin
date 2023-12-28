@@ -1,7 +1,5 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using LibreHardwareMonitor.Hardware;
 using Rainmeter;
@@ -24,13 +22,13 @@ namespace PluginLibreHardwareMonitor
         private static bool _initialized;
         private static Task _initializationTask;
         private static ISensor[] _sensors = {};
-        private static readonly ConcurrentDictionary<string, double> SensorValues = new ConcurrentDictionary<string, double>();
-        private static readonly List<Timer> Timers = new List<Timer>();
+        private static readonly Dictionary<string, Sensor> SensorsMap = new Dictionary<string, Sensor>();
 
         public static void Initialize(API api, string identifier)
         {
             api.LogF(API.LogType.Notice, "Register sensor: {0}", identifier);
-            Timers.Add(new Timer(state => UpdateSensorValue(identifier), null, 0, 1000));
+            var sensor = new Sensor(api, identifier);
+            SensorsMap[identifier] = sensor;
             if (_initializationStarted) return;
             _initializationStarted = true;
             if (_initialized && _initializationTask != null) return;
@@ -44,28 +42,23 @@ namespace PluginLibreHardwareMonitor
             });
         }
 
-        private static void UpdateSensorValue(string identifier)
+        public static ISensor GetSensor(string identifier)
         {
-            var sensor = _sensors.FirstOrDefault(s => s.Identifier.ToString() == identifier);
-            if (sensor == null) return;
-            sensor.Hardware.Update();
-            SensorValues[identifier] = sensor?.Value ?? 0.0;
+            return _sensors.FirstOrDefault(s => s.Identifier.ToString() == identifier);
         }
 
         public static double GetSensorValue(string identifier)
         {
-            return SensorValues.TryGetValue(identifier, out var sensorValue) ? sensorValue : 0.0;
+            return SensorsMap.TryGetValue(identifier, out var sensor) ? sensor.Value : 0.0;
         }
 
         public static void Close()
         {
             _initializationTask?.Wait();
-            foreach (var timer in Timers)
+            foreach (var sensor in SensorsMap)
             {
-                timer.Change(Timeout.Infinite, Timeout.Infinite);
-                timer.Dispose();
+                sensor.Value.Close();
             }
-            Timers.Clear();
             if (Computer == null) return;
             Computer.Close();
             _initialized = false;
