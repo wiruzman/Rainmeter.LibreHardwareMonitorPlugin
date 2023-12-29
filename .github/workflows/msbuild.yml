@@ -50,5 +50,5 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: plugin
+        name: console
         path: ${{env.SOLUTION_FILE_PATH}}/ConsoleLibreHardwareMonitor/bin/Release/ConsoleLibreHardwareMonitor.exe
