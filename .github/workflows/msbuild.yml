@@ -46,4 +46,9 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: plugin
-        path: ./C#/PluginLibreHardwareMonitor/x64/Release/LibreHardwareMonitor.dll
+        path: ${{env.SOLUTION_FILE_PATH}}/PluginLibreHardwareMonitor/x64/Release/LibreHardwareMonitor.dll
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: plugin
+        path: ${{env.SOLUTION_FILE_PATH}}/ConsoleLibreHardwareMonitor/bin/Release/ConsoleLibreHardwareMonitor.exe
