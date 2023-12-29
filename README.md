@@ -8,6 +8,10 @@ Plugin for Rainmeter to use sensors from LibreHardwareMonitor.
 - Copy `LibreHardwareMonitor.dll` from `PluginLibreHardwareMonitor\<platform>\<configuration>` i.e., `PluginLibreHardwareMonitor\x64\Release`
 - Paste into `C:\Users\<username>\AppData\Roaming\Rainmeter\Plugins`
 
+# Release
+
+If you do not want to build the solution yourself, you can download the console application to list identifier for sensors and the plugin that is already built under [Releases](https://github.com/wiruzman/Rainmeter.LibreHardwareMonitorPlugin/releases) section.
+
 # Usage
 
 In Rainmeter skin file (.ini), the plugin can be used as following,
